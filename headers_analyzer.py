@@ -4,6 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import re
 from extract_msg import Message
+# from msg_parser import MsgParser
 
 # variables globales
 x_proofpoint_headers = {}
@@ -88,20 +89,21 @@ class AnalyzerApp(wx.Frame):
                         header_info += f"{key}: {value}\n"
                     self.result_text.SetValue(header_info)
                     self.header_info = header_info
-            elif file_path.lower().endswith('.msg'):
-                msg = Message(file_path)
-                msg_obj = msg._msgobj
+            # elif file_path.lower().endswith('.msg'):
+                # msg = Message(file_path)
+                # msg_obj = msg._msgobj
 
-                for key, val in msg_obj.items():
-                    if key.startswith("X-ProofPoint"):
-                        x_proofpoint_headers[key] = val
+                # for key, val in msg_obj.items():
+                #     if key.startswith("X-ProofPoint"):
+                #         x_proofpoint_headers[key] = val
 
-                header_info = ""
-                for key, value in x_proofpoint_headers.items():
-                    header_info += f"{key}: {value}\n"
+                # header_info = ""
+                # for key, value in x_proofpoint_headers.items():
+                #     header_info += f"{key}: {value}\n"
 
-                self.result_text.SetValue(header_info)
-                self.header_info = header_info
+                # self.result_text.SetValue(header_info)
+                # self.header_info = header_info
+
             elif file_path:
                 wx.MessageBox("Please select a valid .eml or .msg file.", "File Format Error", wx.OK | wx.ICON_ERROR)
 
