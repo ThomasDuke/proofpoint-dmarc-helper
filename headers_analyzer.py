@@ -3,7 +3,7 @@ import email
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import re
-from msg_parser import MSGParser
+from extract_msg import Message
 
 # variables globales
 x_proofpoint_headers = {}
@@ -89,11 +89,14 @@ class AnalyzerApp(wx.Frame):
                     self.result_text.SetValue(header_info)
                     self.header_info = header_info
             elif file_path.lower().endswith('.msg'):
-                msg = MSGParser(file_path)
-                msg_obj = msg.parse_msg()
-                x_proofpoint_headers = msg_obj.get('headers', {}).get('X-ProofPoint', {})
+                msg = Message(file_path)
+                msg_obj = msg._msgobj
 
-                header_info = "X-ProofPoint Headers:\n"
+                for key, val in msg_obj.items():
+                    if key.startswith("X-ProofPoint"):
+                        x_proofpoint_headers[key] = val
+
+                header_info = ""
                 for key, value in x_proofpoint_headers.items():
                     header_info += f"{key}: {value}\n"
 
